@@ -72,12 +72,12 @@ if st.button("Detect"):
                 if "HTTPSConnectionPool" in error:
                     st.write(error)
                     break
-                result += "</table>"
 
             if i == keys_length:
                 bar.progress(100);
             else:
                 bar.progress(i * delta)
+        result += "</table>"
         st.markdown(result, unsafe_allow_html=True)
         if len(result_available) > 0:
             st.markdown("### Avaiable Keys")
