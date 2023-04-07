@@ -42,7 +42,7 @@ def get_models():
         return str(e)
 
 st.markdown("## Detect OpenAI Keys")
-key_input = st.text_area("Type OpenAI Key here:")
+key_input = st.text_area("Type OpenAI Key here for detecting:")
 
 if st.button("Detect"):
     keys = [key.strip() for key in key_input.split("\n") if key.strip()]
@@ -75,7 +75,7 @@ if st.button("Detect"):
     st.markdown(result)
 
 st.markdown("## Show models")
-key_input2 = st.text_area("Type OpenAI Key here:")
+key_input2 = st.text_area("Type OpenAI Key here for showing models:")
 
 if st.button("Show Models"):
     keys = [key.strip() for key in key_input2.split("\n") if key.strip()]
