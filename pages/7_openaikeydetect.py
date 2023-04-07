@@ -70,7 +70,7 @@ if st.button("Detect"):
                 openai_return = openai_return.replace("|", "\|")
                 result += f"| {key} | {is_available} | {model_count} | {openai_return} | {error} |\n"
                 if is_available:
-                    result_available += f"{key}\n"
+                    result_available += f"{key}<br />"
                 if "HTTPSConnectionPool" in error:
                     st.write(error)
                     break
@@ -93,10 +93,10 @@ if st.button("Show Models"):
     keys = [key.strip() for key in key_input2.split("\n") if key.strip()]
     keys_length = len(keys)
     if keys_length > 0 :
+        result = "| KEY | Models |\n"
+        result += "|-------------|--------------|\n"
         for key in keys:
             if(len(key) > 0):
-                result = "| KEY | Models |\n"
-                result += "|-------------|--------------|\n"
                 result += f"| {key} | { get_models(key) } |\n"
             st.markdown(result)
     else:
