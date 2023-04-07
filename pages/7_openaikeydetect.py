@@ -23,9 +23,9 @@ def check_key(key):
         prompt = "Hello,"
         model_names = ",".join([model.id for model in models.data])
         completions = openai.Completion.create(engine=cheapest_model_id, prompt=prompt, max_tokens=5)
-        result = completions.choices[0].text
-        if len(result) > 0:
-            return True, len(models), model_names, result, ""
+        openai_return = completions.choices[0].text
+        if len(openai_return) > 0:
+            return True, len(models), model_names, openai_return, ""
         else:
             return False, 0, "No available models.", "", ""
     except Exception as e:
@@ -54,8 +54,8 @@ if st.button("Detect"):
 
         key = key.strip()
         if(len(key) > 0):
-            is_available, model_count, model_names, result, error = check_key(key)
-            result += f"| {key} | {is_available} | {model_count} | {model_names} | {result} | {error} |\n"
+            is_available, model_count, model_names, openai_return, error = check_key(key)
+            result += f"| {key} | {is_available} | {model_count} | {model_names} | {openai_return} | {error} |\n"
             if "HTTPSConnectionPool" in error:
                 st.write(error)
                 break
