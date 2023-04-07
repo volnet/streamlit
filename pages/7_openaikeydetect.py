@@ -82,7 +82,7 @@ if st.button("Detect"):
         st.markdown(result)
         if len(result_available) > 0:
             st.markdown("### Avaiable Keys")
-            st.markdown(result_available)
+            st.markdown(result_available, unsafe_allow_html=True)
     else:
         st.write("You must enter some keys.")
 
