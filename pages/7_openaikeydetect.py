@@ -54,7 +54,7 @@ if st.button("Detect"):
 
         key = key.strip()
         if(len(key) > 0):
-            is_available, model_count, model_names, openai_return, error = check_key(key)
+            is_available, model_count, openai_return, error = check_key(key)
             result += f"| {key} | {is_available} | {model_count} | {openai_return} | {error} |\n"
             if "HTTPSConnectionPool" in error:
                 st.write(error)
