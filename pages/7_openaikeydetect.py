@@ -20,16 +20,16 @@ def check_key(key):
         #cheapest_model = min(models, key=lambda x: x['price']['cost_per_minute'])
         #cheapest_model_id = cheapest_model['id']
         cheapest_model_id = models.data[0].id
-        prompt = "Hello, world."
-        model_names = ",".join(models)
+        prompt = "Hello,"
+        model_names = ",".join([model.id for model in models.data])
         completions = openai.Completion.create(engine=cheapest_model_id, prompt=prompt, max_tokens=5)
-        st.write(completions.choices[0].text)
-        if completions.choices[0].text == "Hello":
-            return True, 1, model_names
+        result = completions.choices[0].text
+        if len(result) > 0:
+            return True, len(models), model_names, result, ""
         else:
-            return False, 0, "No models can use.", ""
+            return False, 0, "No available models.", "", ""
     except Exception as e:
-        return False, 0, model_names, str(e)
+        return False, 0, model_names, "", str(e)
 
 
 
@@ -46,16 +46,16 @@ if st.button("Detect"):
     i = 0
     delta = int(100 / len(keys))
 
-    result = "| KEY | Available | Model Count | Models | Error |\n"
-    result += "|-------------|--------------|-------------|-------------|-------------|\n"
+    result = "| KEY | Available | Model Count | Models | Result | Error |\n"
+    result += "|-------------|--------------|-------------|-------------|-------------|-------------|\n"
     for key in keys:
         i = i + 1
         latest_iteration.text(f'Procressing : {i}/{len(keys)}')
 
         key = key.strip()
         if(len(key) > 0):
-            is_available, model_count, model_names, error = check_key(key)
-            result += f"| {key} | {is_available} | {model_count} | {model_names} | {error} |\n"
+            is_available, model_count, model_names, result, error = check_key(key)
+            result += f"| {key} | {is_available} | {model_count} | {model_names} | {result} | {error} |\n"
             if "HTTPSConnectionPool" in error:
                 st.write(error)
                 break
