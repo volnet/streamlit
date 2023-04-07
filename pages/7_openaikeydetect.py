@@ -17,7 +17,8 @@ def check_key(key):
         openai.api_key = key
         models = openai.Model.list()
         if len(models) > 0:
-            return True, len(models), ""
+            model_names = ",".join([model.name for model in models])
+            return True, len(models), model_names
         else:
             return False, 0, "No models found"
     except Exception as e:
@@ -36,7 +37,7 @@ if st.button("Detect"):
     i = 0
     delta = int(100 / len(keys))
 
-    result = "| KEY | Available | Model Count | Error |\n"
+    result = "| KEY | Available | Model Count | Models/Error |\n"
     result += "|-------------|--------------|-------------|-------------|\n"
     for key in keys:
         i = i + 1
@@ -44,10 +45,10 @@ if st.button("Detect"):
 
         key = key.strip()
         if(len(key) > 0):
-            is_available, model_count, error = check_key(key)
-            result += f"| {key} | {is_available} | {model_count} | {error} |\n"
-            if "HTTPSConnectionPool" in error:
-                st.write(error)
+            is_available, model_count, model_names = check_key(key)
+            result += f"| {key} | {is_available} | {model_count} | {model_names} |\n"
+            if "HTTPSConnectionPool" in model_names:
+                st.write(model_names)
                 break
 
         if i == len(keys):
