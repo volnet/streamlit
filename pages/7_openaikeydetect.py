@@ -31,7 +31,7 @@ def check_key(key):
     except Exception as e:
         return False, 0, "", str(e)
 
-def get_models():
+def get_models(key):
     model_names = ""
     try:
         openai.api_key = key
@@ -47,41 +47,49 @@ key_input = st.text_area("Type OpenAI Key here for detecting:")
 if st.button("Detect"):
     keys = [key.strip() for key in key_input.split("\n") if key.strip()]
     
-    keys_count = st.empty()
-    keys_count.text(f"Total keys count : { len(keys) }")
-    latest_iteration = st.empty()
+    keys_length = len(keys)
+    label_keys_count = st.empty()
+    label_keys_count.text(f"Total keys count : { keys_length }")
+    if(keys_length > 0):
+        latest_iteration = st.empty()
 
-    bar = st.progress(0)
-    i = 0
-    delta = int(100 / len(keys))
+        bar = st.progress(0)
+        i = 0
+        delta = int(100 / keys_length)
 
-    result = "| KEY | Available | Model Count | Result | Error |\n"
-    result += "|-------------|--------------|-------------|-------------|-------------|\n"
-    for key in keys:
-        i = i + 1
-        latest_iteration.text(f'Procressing : {i}/{len(keys)}')
+        result = "| KEY | Available | Model Count | Result | Error |\n"
+        result += "|-------------|--------------|-------------|-------------|-------------|\n"
+        for key in keys:
+            i = i + 1
+            latest_iteration.text(f'Procressing : {i}/keys_length}')
 
-        if(len(key) > 0):
-            is_available, model_count, openai_return, error = check_key(key)
-            result += f"| {key} | {is_available} | {model_count} | {openai_return} | {error} |\n"
-            if "HTTPSConnectionPool" in error:
-                st.write(error)
-                break
+            if(keys_length > 0):
+                is_available, model_count, openai_return, error = check_key(key)
+                result += f"| {key} | {is_available} | {model_count} | {openai_return} | {error} |\n"
+                if "HTTPSConnectionPool" in error:
+                    st.write(error)
+                    break
 
-        if i == len(keys):
-            bar.progress(100);
-        else:
-            bar.progress(i * delta)
-    st.markdown(result)
+            if i == keys_length:
+                bar.progress(100);
+            else:
+                bar.progress(i * delta)
+        st.markdown(result)
+    else:
+        st.write("You must enter some keys.")
 
 st.markdown("## Show models")
 key_input2 = st.text_area("Type OpenAI Key here for showing models:")
 
 if st.button("Show Models"):
     keys = [key.strip() for key in key_input2.split("\n") if key.strip()]
-    for key in keys:
-        if(len(key) > 0):
-            result = "| KEY | Models |\n"
-            result += "|-------------|--------------|\n"
-            result += f"| {key} | { get_models(key) } |\n"
-        st.markdown(result)
+    keys_length = len(keys)
+    if keys_length > 0 :
+        for key in keys:
+            if(len(key) > 0):
+                result = "| KEY | Models |\n"
+                result += "|-------------|--------------|\n"
+                result += f"| {key} | { get_models(key) } |\n"
+            st.markdown(result)
+    else:
+        st.write("You must enter some keys.")
