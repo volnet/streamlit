@@ -68,7 +68,7 @@ if st.button("Detect"):
                 is_available, model_count, openai_return, error = check_key(key)
                 result += f"<tr><td>{key}</td><td>{is_available}</td><td>{model_count}</td><td>{openai_return}</td><td>{error}</td></tr>"
                 if is_available:
-                    result_available += f"{key}<br />"
+                    result_available += f"{key}\n"
                 if "HTTPSConnectionPool" in error:
                     st.write(error)
                     break
