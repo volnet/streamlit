@@ -28,7 +28,7 @@ def check_key(key):
         else:
             return False, 0, "No models can use.", ""
     except Exception as e:
-        return False, 0, models_name, str(e)
+        return False, 0, model_names, str(e)
 
 
 
