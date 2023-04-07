@@ -13,6 +13,7 @@ def check_key(key):
     # time.sleep(1)
     # return True, 1, ""
     
+    model_names = ""
     try:
         openai.api_key = key
         models = openai.Model.list()
