@@ -31,9 +31,18 @@ def check_key(key):
     except Exception as e:
         return False, 0, "", str(e)
 
+def get_models():
+    model_names = ""
+    try:
+        openai.api_key = key
+        models = openai.Model.list()
+        model_names = ",".join([model.id for model in models.data])
+        return model_names
+    except Exception as e:
+        return str(e)
 
-
-key_input = st.text_area("Type OpenAI Key here.")
+st.markdown("## Detect OpenAI Keys")
+key_input = st.text_area("Type OpenAI Key here:")
 
 if st.button("Detect"):
     keys = [key.strip() for key in key_input.split("\n") if key.strip()]
@@ -52,7 +61,6 @@ if st.button("Detect"):
         i = i + 1
         latest_iteration.text(f'Procressing : {i}/{len(keys)}')
 
-        key = key.strip()
         if(len(key) > 0):
             is_available, model_count, openai_return, error = check_key(key)
             result += f"| {key} | {is_available} | {model_count} | {openai_return} | {error} |\n"
@@ -66,3 +74,14 @@ if st.button("Detect"):
             bar.progress(i * delta)
     st.markdown(result)
 
+st.markdown("## Show models")
+key_input2 = st.text_area("Type OpenAI Key here:")
+
+if st.button("Show Models"):
+    keys = [key.strip() for key in key_input2.split("\n") if key.strip()]
+    for key in keys:
+        if(len(key) > 0):
+            result = "| KEY | Models |\n"
+            result += "|-------------|--------------|\n"
+            result += f"| {key} | { get_models(key) } |\n"
+        st.markdown(result)
