@@ -20,6 +20,7 @@ def check_key(key):
         cheapest_model_id = cheapest_model['id']
         prompt = "Hello, world."
         completions = openai.Completion.create(engine=cheapest_model_id, prompt=prompt, max_tokens=5)
+        st.write(completions.choices[0].text)
         if completions.choices[0].text == "Hello":
             return True, 1, ""
         else:
