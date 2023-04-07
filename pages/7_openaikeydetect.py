@@ -16,15 +16,17 @@ def check_key(key):
     try:
         openai.api_key = key
         models = openai.Model.list()
-        cheapest_model = min(models, key=lambda x: x['price']['cost_per_minute'])
-        cheapest_model_id = cheapest_model['id']
+        #cheapest_model = min(models, key=lambda x: x['price']['cost_per_minute'])
+        #cheapest_model_id = cheapest_model['id']
+        cheapest_model_id = models.data[0].id
         prompt = "Hello, world."
+        models_name = ",".join(models)
         completions = openai.Completion.create(engine=cheapest_model_id, prompt=prompt, max_tokens=5)
         st.write(completions.choices[0].text)
         if completions.choices[0].text == "Hello":
-            return True, 1, ""
+            return True, 1, models_name
         else:
-            return False, 0, "Model did not return expected output"
+            return False, 0, "No models can use."
     except Exception as e:
         return False, 0, str(e)
 
