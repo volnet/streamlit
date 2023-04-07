@@ -82,6 +82,8 @@ if st.button("Detect"):
         if len(result_available) > 0:
             st.markdown("### Avaiable Keys")
             st.code(result_available, line_numbers=True)
+        else:
+            st.write("No available keys.")
     else:
         st.write("You must enter some keys.")
 
