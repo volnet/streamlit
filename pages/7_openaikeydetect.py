@@ -67,7 +67,7 @@ if st.button("Detect"):
 
             if(keys_length > 0):
                 is_available, model_count, openai_return, error = check_key(key)
-                openai_return = openai_return.replace("|", "")
+                openai_return = openai_return.replace("|", "&#124;")
                 result += f"| {key} |  {is_available}  |  {model_count}  |  {openai_return}  |  {error}  |\n"
                 if is_available:
                     result_available += f"{key}<br />"
