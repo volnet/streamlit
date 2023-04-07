@@ -79,9 +79,9 @@ if st.button("Detect"):
             else:
                 bar.progress(i * delta)
         st.markdown(result)
-        if len(result_right) > 0:
+        if len(result_available) > 0:
             st.markdown("### Avaiable Keys")
-            st.markdown(result_right)
+            st.markdown(result_available)
     else:
         st.write("You must enter some keys.")
 
