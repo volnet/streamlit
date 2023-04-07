@@ -59,27 +59,26 @@ if st.button("Detect"):
 
         result_available = "";
 
-        result = "| KEY | Available | Model Count | Result | Error |\n"
-        result += "|-------------|--------------|-------------|-------------|-------------|\n"
+        result = "<table><tr><td>KEY</td><td>Available</td><td>Model Count</td><td>Result</td><td>Error</td></tr>"
         for key in keys:
             i = i + 1
             latest_iteration.text(f'Procressing : {i}/{keys_length}')
 
             if(keys_length > 0):
                 is_available, model_count, openai_return, error = check_key(key)
-                openai_return = openai_return.replace("|", "&#124;")
-                result += f"| {key} |  {is_available}  |  {model_count}  |  {openai_return}  |  {error}  |\n"
+                result += f"<tr><td>{key}</td><td>{is_available}</td><td>{model_count}</td><td>{openai_return}</td><td>{error}</td></tr>"
                 if is_available:
                     result_available += f"{key}<br />"
                 if "HTTPSConnectionPool" in error:
                     st.write(error)
                     break
+                result += "</table>"
 
             if i == keys_length:
                 bar.progress(100);
             else:
                 bar.progress(i * delta)
-        st.markdown(result)
+        st.markdown(result, unsafe_allow_html=True)
         if len(result_available) > 0:
             st.markdown("### Avaiable Keys")
             st.markdown(result_available, unsafe_allow_html=True)
