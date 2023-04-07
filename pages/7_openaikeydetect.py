@@ -57,15 +57,19 @@ if st.button("Detect"):
         i = 0
         delta = int(100 / keys_length)
 
+        result_available = "";
+
         result = "| KEY | Available | Model Count | Result | Error |\n"
         result += "|-------------|--------------|-------------|-------------|-------------|\n"
         for key in keys:
             i = i + 1
-            latest_iteration.text(f'Procressing : {i}/keys_length}')
+            latest_iteration.text(f'Procressing : {i}/{keys_length}')
 
             if(keys_length > 0):
                 is_available, model_count, openai_return, error = check_key(key)
                 result += f"| {key} | {is_available} | {model_count} | {openai_return} | {error} |\n"
+                if is_available:
+                    result_available += f"{key}\n"
                 if "HTTPSConnectionPool" in error:
                     st.write(error)
                     break
@@ -75,6 +79,9 @@ if st.button("Detect"):
             else:
                 bar.progress(i * delta)
         st.markdown(result)
+        if len(result_right) > 0:
+            st.markdown("### Avaiable Keys")
+            st.markdown(result_right)
     else:
         st.write("You must enter some keys.")
 
